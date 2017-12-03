@@ -12,8 +12,9 @@ public class Main {
         
         ServidorTcp servidor = new ServidorTcp();
         servidor.runServidor();
-        //ClienteTcp cliente = new ClienteTcp("127.0.0.1");
-       // cliente.runClient();
+        
+       
+       
     }
 
     

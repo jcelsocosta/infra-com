@@ -5,10 +5,16 @@
  */
 package servidor;
 
+import java.io.BufferedReader;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  *
@@ -44,6 +50,17 @@ public class ServidorTcp {
     }
 
     private void processConnection() throws IOException {
+        
+        InputStream in = connection.getInputStream();
+        InputStreamReader isr = new InputStreamReader(in);
+        BufferedReader reader = new BufferedReader(isr);
+        File file = new File("C:\\Users\\jose\\Documents\\Projeto-InfraCom\\src\\file\\perfil2.jpg");
+        FileOutputStream out = new FileOutputStream(file);
+        System.out.println("Tamanho"+in.read());
+        int controle;
+        while((controle = in.read())!=-1){
+            out.write(controle);
+        }
         
     }
 
