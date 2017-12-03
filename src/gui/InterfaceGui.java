@@ -1,6 +1,9 @@
 
 package gui;
 
+import java.io.IOException;
+import servidor.ServidorTcp;
+
 /**
  *
  * @author jose
@@ -152,11 +155,12 @@ public class InterfaceGui extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new InterfaceGui().setVisible(true);
+                
             }
         });
     }

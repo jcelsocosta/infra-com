@@ -44,18 +44,21 @@ public class ClienteTcp {
         System.out.println(ipServidor);
         
         
-        File file = new File("C:\\Users\\jose\\Desktop\\infracomMini\\[Pearson] - Algorithms, 4th ed. - [Sedgewick, Wayne](1).pdf");
+        File file = new File("C:\\Users\\jose\\Desktop\\eirck nautico\\Warcraft III.rar");
         FileInputStream in = new FileInputStream(file);
         OutputStream  outputStream = cliente.getOutputStream();
         OutputStreamWriter osw = new OutputStreamWriter(outputStream);
         BufferedWriter writer = new BufferedWriter(osw);
         writer.write(file.getName()+"\n");
         writer.flush();
-        System.out.println("Tamanho"+in.read());
+        
+        System.out.println("Tamanho: "+in.available());
         int controle ;
-        while((controle = in.read())!= -1){
-            //System.out.println(c);
-            outputStream.write(controle);
+        int tamanho =1024;
+        byte[] buffer = new byte[tamanho];
+        while((controle = in.read(buffer,0,tamanho))!= -1){
+             
+             outputStream.write(buffer,0,controle);
         }
         
     }

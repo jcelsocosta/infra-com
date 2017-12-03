@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
+
 
 /**
  *
@@ -54,12 +54,16 @@ public class ServidorTcp {
         InputStream in = connection.getInputStream();
         InputStreamReader isr = new InputStreamReader(in);
         BufferedReader reader = new BufferedReader(isr);
-        File file = new File("C:\\Users\\jose\\Documents\\Projeto-InfraCom\\src\\file\\perfil2.jpg");
+        File file = new File("C:\\Users\\jose\\Desktop\\infracomMini\\"+reader.readLine());
         FileOutputStream out = new FileOutputStream(file);
+        int tamanho = 1024;
+        byte[] buffer = new byte[tamanho];
+        
         System.out.println("Tamanho"+in.read());
         int controle;
-        while((controle = in.read())!=-1){
-            out.write(controle);
+        while((controle = in.read(buffer,0,tamanho))!=-1){
+            System.out.println(file.getUsableSpace());
+            out.write(buffer,0,controle);
         }
         
     }
