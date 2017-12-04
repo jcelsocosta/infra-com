@@ -1,24 +1,31 @@
 
 package cliente;
 
+import arquivo.TransferFile;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class ClienteTcp {
+public class ClienteTcp implements Runnable{
     
     private Socket cliente;
     private String addressIp;
-    
-    public ClienteTcp(String host){
+    private File file;
+    private int porta;
+    public ClienteTcp(String host,int porta){
         
         this.addressIp = host;
+        this.porta = porta;
     }
             
     public void runClient(){
@@ -36,30 +43,58 @@ public class ClienteTcp {
 
     private void connectToServer() throws IOException {
         
-        cliente = new Socket(InetAddress.getByName(addressIp).getHostName(),12345);
+        cliente = new Socket(InetAddress.getByName(addressIp).getHostName(),porta);
+        
     }
+    @Override
+    public void run(){
+        
+        try{
+            cliente = new Socket(InetAddress.getByName(addressIp).getHostName(),porta);
+            String ipServidor = (String) cliente.getInetAddress().getHostName();
+            System.out.println(ipServidor);
+        
+            InputStream in = cliente.getInputStream();
+            InputStreamReader isr = new InputStreamReader(in);
+            BufferedReader reader = new BufferedReader(isr);
+            File file = new File("C:\\Users\\jose\\Desktop\\infracomMini\\"+reader.readLine());
+            FileOutputStream out = new FileOutputStream(file);
+            int tamanho = 1024;
+            byte[] buffer = new byte[tamanho];
 
+            System.out.println("Tamanho"+in.read());
+            int controle;
+            while((controle = in.read(buffer,0,tamanho))!=-1){
+                //System.out.println(file.getUsableSpace());
+                out.write(buffer,0,controle);
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        
+    }
     private void processConnection() throws IOException {
+        
+        
         String ipServidor = (String) cliente.getInetAddress().getHostName();
         System.out.println(ipServidor);
         
-        
-        File file = new File("C:\\Users\\jose\\Desktop\\eirck nautico\\Warcraft III.rar");
-        FileInputStream in = new FileInputStream(file);
-        OutputStream  outputStream = cliente.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(outputStream);
-        BufferedWriter writer = new BufferedWriter(osw);
-        writer.write(file.getName()+"\n");
-        writer.flush();
-        
-        System.out.println("Tamanho: "+in.available());
-        int controle ;
-        int tamanho =1024;
+        InputStream in = cliente.getInputStream();
+        InputStreamReader isr = new InputStreamReader(in);
+        BufferedReader reader = new BufferedReader(isr);
+        File file = new File("C:\\Users\\jose\\Desktop\\infracomMini\\"+reader.readLine());
+        FileOutputStream out = new FileOutputStream(file);
+        int tamanho = 1024;
         byte[] buffer = new byte[tamanho];
-        while((controle = in.read(buffer,0,tamanho))!= -1){
-             
-             outputStream.write(buffer,0,controle);
+        
+        System.out.println("Tamanho"+in.read());
+        int controle;
+        while((controle = in.read(buffer,0,tamanho))!=-1){
+            //System.out.println(file.getUsableSpace());
+            out.write(buffer,0,controle);
         }
+        
+       
         
     }
 
