@@ -2,7 +2,11 @@
 package gui;
 
 import cliente.ClienteTcp;
+import comunicacao.ControlCliente;
+import comunicacao.ControlServidor;
+import java.io.File;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 import servidor.ServidorTcp;
 
 /**
@@ -11,6 +15,9 @@ import servidor.ServidorTcp;
  */
 public class InterfaceGui extends javax.swing.JFrame {
 
+    private ClienteTcp clienteTcp;
+    private ServidorTcp servidor;
+    
     public InterfaceGui() {
         initComponents();
     }
@@ -21,44 +28,34 @@ public class InterfaceGui extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         portaServidorText = new javax.swing.JTextField();
-        ipServidorText = new javax.swing.JTextField();
         CriarServerBtn = new javax.swing.JButton();
         caminhoArquivoText = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         portaClienteText = new javax.swing.JTextField();
         conectarServerBtn = new javax.swing.JButton();
         ipCliente = new javax.swing.JTextField();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jProgressBar2 = new javax.swing.JProgressBar();
-        IniciarBarra = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        pauseBtn = new javax.swing.JButton();
+        reiniciarBtn = new javax.swing.JButton();
+        cancelarBtn = new javax.swing.JButton();
+        ipHostCliente = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Servidor");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(10, 36, 120, 14);
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 120, -1));
 
-        portaServidorText.setText("Porta Servidor");
         portaServidorText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 portaServidorTextActionPerformed(evt);
             }
         });
-        jPanel1.add(portaServidorText);
-        portaServidorText.setBounds(10, 61, 163, 20);
-
-        ipServidorText.setText("Ip");
-        ipServidorText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ipServidorTextActionPerformed(evt);
-            }
-        });
-        jPanel1.add(ipServidorText);
-        ipServidorText.setBounds(10, 92, 163, 20);
+        jPanel1.add(portaServidorText, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 163, -1));
 
         CriarServerBtn.setText("Criar");
         CriarServerBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -66,75 +63,82 @@ public class InterfaceGui extends javax.swing.JFrame {
                 CriarServerBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(CriarServerBtn);
-        CriarServerBtn.setBounds(14, 167, 120, 23);
-
-        caminhoArquivoText.setText("Caminho do arquivo");
-        jPanel1.add(caminhoArquivoText);
-        caminhoArquivoText.setBounds(10, 123, 163, 20);
+        jPanel1.add(CriarServerBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 120, -1));
+        jPanel1.add(caminhoArquivoText, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 163, -1));
 
         jLabel2.setText("Cliente");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(482, 36, 130, 14);
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 130, -1));
 
-        portaClienteText.setText("Porta Cliente");
         portaClienteText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 portaClienteTextActionPerformed(evt);
             }
         });
-        jPanel1.add(portaClienteText);
-        portaClienteText.setBounds(466, 61, 189, 20);
+        jPanel1.add(portaClienteText, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 60, 189, -1));
 
-        conectarServerBtn.setText("conectar");
+        conectarServerBtn.setText("iniciar");
         conectarServerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 conectarServerBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(conectarServerBtn);
-        conectarServerBtn.setBounds(466, 161, 170, 23);
+        jPanel1.add(conectarServerBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 180, 130, -1));
 
-        ipCliente.setText("Ip");
-        jPanel1.add(ipCliente);
-        ipCliente.setBounds(466, 92, 189, 20);
-
-        jProgressBar1.setStringPainted(true);
-        jPanel1.add(jProgressBar1);
-        jProgressBar1.setBounds(10, 225, 531, 30);
-
-        jLabel3.setText("Barra de progresso Servidor");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(14, 208, 330, 14);
-
-        jLabel4.setText("Barra de progresso Cliente");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(10, 273, 330, 14);
-
-        jProgressBar2.setStringPainted(true);
-        jPanel1.add(jProgressBar2);
-        jProgressBar2.setBounds(10, 293, 531, 43);
-
-        IniciarBarra.setText("Barras");
-        IniciarBarra.addActionListener(new java.awt.event.ActionListener() {
+        ipCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IniciarBarraActionPerformed(evt);
+                ipClienteActionPerformed(evt);
             }
         });
-        jPanel1.add(IniciarBarra);
-        IniciarBarra.setBounds(590, 220, 140, 23);
+        jPanel1.add(ipCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 100, 189, -1));
+
+        jLabel5.setText("Porta do Servidor");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+
+        jLabel7.setText("Caminho do Arquivo");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+
+        jLabel8.setText("Porta Cliente");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, -1, -1));
+
+        jLabel9.setText("Ip");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 100, 80, -1));
+
+        pauseBtn.setText("pause");
+        pauseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pauseBtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(pauseBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 180, 150, -1));
+
+        reiniciarBtn.setText("reiniciar");
+        reiniciarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reiniciarBtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(reiniciarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 210, 130, -1));
+
+        cancelarBtn.setText("cancelar");
+        cancelarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarBtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cancelarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 210, 150, -1));
+        jPanel1.add(ipHostCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 150, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
         );
 
         pack();
@@ -144,17 +148,13 @@ public class InterfaceGui extends javax.swing.JFrame {
        
     }//GEN-LAST:event_portaServidorTextActionPerformed
 
-    private void ipServidorTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipServidorTextActionPerformed
-       
-    }//GEN-LAST:event_ipServidorTextActionPerformed
-
     private void CriarServerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CriarServerBtnActionPerformed
         int portaServidor = Integer.parseInt( portaServidorText.getText());
-        String ipServidor = ipServidorText.getText();
+        String ipServidor="ee";
         String caminhoArquivo = caminhoArquivoText.getText();
-        ServidorTcp servidor = new ServidorTcp(portaServidor,ipServidor,caminhoArquivo);
+        servidor = new ServidorTcp(portaServidor,ipServidor,caminhoArquivo);
         new Thread(servidor).start();
-        
+         
         
         
     }//GEN-LAST:event_CriarServerBtnActionPerformed
@@ -163,32 +163,32 @@ public class InterfaceGui extends javax.swing.JFrame {
         
     }//GEN-LAST:event_portaClienteTextActionPerformed
 
-    private void IniciarBarraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarBarraActionPerformed
-        new Thread(){
-            @Override
-            public void run(){
-                for(int i=0;i<=100;i++){
-                    try{
-                        sleep(100);
-                        jProgressBar1.setValue(i);
-                        jProgressBar2.setValue(i);
-                    }catch(InterruptedException e){
-                    
-                    }
-                }
-                
-            }
-        
-        }.start();
-    }//GEN-LAST:event_IniciarBarraActionPerformed
-
     private void conectarServerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectarServerBtnActionPerformed
         String ip = ipCliente.getText();
         int porta = Integer.parseInt(portaClienteText.getText());
-        ClienteTcp clienteTcp = new ClienteTcp(ip,porta);
+        clienteTcp = new ClienteTcp(ip,porta);
+        ipHostCliente.setText(ip);
         new Thread(clienteTcp).start();
         
+        
     }//GEN-LAST:event_conectarServerBtnActionPerformed
+
+    private void ipClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipClienteActionPerformed
+        
+    }//GEN-LAST:event_ipClienteActionPerformed
+
+    private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
+        
+        
+    }//GEN-LAST:event_pauseBtnActionPerformed
+
+    private void reiniciarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciarBtnActionPerformed
+        
+    }//GEN-LAST:event_reiniciarBtnActionPerformed
+
+    private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
+        
+    }//GEN-LAST:event_cancelarBtnActionPerformed
 
     public static void main(String args[]) throws IOException {
         
@@ -202,19 +202,21 @@ public class InterfaceGui extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CriarServerBtn;
-    private javax.swing.JButton IniciarBarra;
     private javax.swing.JTextField caminhoArquivoText;
+    private javax.swing.JButton cancelarBtn;
     private javax.swing.JButton conectarServerBtn;
     private javax.swing.JTextField ipCliente;
-    private javax.swing.JTextField ipServidorText;
+    private javax.swing.JLabel ipHostCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JProgressBar jProgressBar2;
+    private javax.swing.JButton pauseBtn;
     private javax.swing.JTextField portaClienteText;
     private javax.swing.JTextField portaServidorText;
+    private javax.swing.JButton reiniciarBtn;
     // End of variables declaration//GEN-END:variables
 }
